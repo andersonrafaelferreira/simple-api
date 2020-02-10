@@ -1,17 +1,48 @@
-const express = require("express");
+var express = require("express")
+var nunjucks = require("nunjucks")
 
-const server = express();
+var app = express();
 
-server.use(express.json());
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json());
 
-server.get("/", (req, res) => {
-  return res.json({ message: "node server" });
+const users = []
+
+app.post('/geo', (req, res) => {
+ const data = req.body;
+
+ users.push(data)
+ console.log(users);
+
+//   return res.json(data);
+    return res.redirect('/');
+})
+
+nunjucks.configure('views', {
+    autoescape: true,
+    express: app,
+    watch: true
 });
 
-server.post("/geo", (req, res) => {
-  const data = req.body;
+app.set("view engine", "njk")
 
-  return res.json(data);
+app.get('/', function(req, res) {
+   res.render('list', {
+       users
+   })
 });
 
-server.listen(3000);
+app.get('/new', function(req, res) {
+   res.render('new');
+});
+
+app.post('/create', function(req, res) {
+
+    users.push(req.body.user)
+
+   return res.redirect('/');
+});
+
+
+
+app.listen(3000)

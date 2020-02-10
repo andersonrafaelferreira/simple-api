@@ -1,0 +1,11 @@
+<h1>Listagem de usuários</h1>
+
+<ul>
+	{% for user in users %}
+		<li>
+		    <a href="https://www.google.com/maps/@{{user.lat}},{{user.lon}},15z" target="_blank">{{user.username}}</a>
+		</li>
+	{% endfor %}
+</ul>
+
+<!--a href="/new">Cadastrar usuário</a-->
