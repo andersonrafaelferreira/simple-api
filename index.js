@@ -39,7 +39,8 @@ app.get("/new", function(req, res) {
 app.post("/create", function(req, res) {
   users.push(req.body.user);
 
-  return res.redirect("/");
+  //   return res.redirect("/");
+  return res.send({ user: req.body.user });
 });
 
 app.listen(process.env.PORT);
