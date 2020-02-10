@@ -4,9 +4,9 @@
     "express": "^4.17.1",
     "nunjucks": "^3.2.0"
   },
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "main": "index.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
