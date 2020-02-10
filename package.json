@@ -5,7 +5,8 @@
     "nunjucks": "^3.2.0"
   },
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "main": "index.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"
