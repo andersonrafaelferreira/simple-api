@@ -9,13 +9,13 @@ app.use(express.json());
 const users = [];
 
 app.post("/geo", (req, res) => {
-  const data = req.body;
+  const user = req.body;
 
-  users.push(data);
+  users.push(user);
   console.log(users);
 
-  //   return res.json(data);
-  return res.redirect("/");
+  //return res.json(data);
+  return res.send({ user });
 });
 
 nunjucks.configure("views", {
@@ -39,8 +39,7 @@ app.get("/new", function(req, res) {
 app.post("/create", function(req, res) {
   users.push(req.body.user);
 
-  //   return res.redirect("/");
-  return res.send({ user: req.body.user });
+  return res.redirect("/");
 });
 
 app.listen(process.env.PORT);
