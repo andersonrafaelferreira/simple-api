@@ -9,9 +9,9 @@ app.use(express.json());
 const users = [];
 
 app.post("/geo", (req, res) => {
-  const extracted = req.body.user;
+  const item = req.body;
 
-  let user = extracted[0];
+  let user = item[0];
 
   console.log(user, "user");
 
