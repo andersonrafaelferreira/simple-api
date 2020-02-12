@@ -9,13 +9,13 @@ app.use(express.json());
 const users = [];
 
 app.post("/geo", (req, res) => {
-  const user = req.body;
+  const user = req.body.user[0];
 
-  console.log(user[0], "user");
+  console.log(user, "user");
 
-  user[0].createdAt = new Date().toLocaleTimeString();
+  user.createdAt = new Date().toLocaleTimeString();
 
-  users.push(user[0]);
+  users.push(user);
   users.reverse();
   // console.log(users, "users");
 
