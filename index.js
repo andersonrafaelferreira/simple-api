@@ -13,7 +13,7 @@ app.post("/geo", (req, res) => {
 
   console.log(user[0], "user");
 
-  user[0].createdAt = new Date().toLocaleTimeString;
+  user[0].createdAt = new Date().toLocaleTimeString();
 
   users.push(user[0]);
   users.reverse();
