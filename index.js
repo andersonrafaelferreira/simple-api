@@ -17,7 +17,7 @@ app.post("/geo", (req, res) => {
 
   users.push(user[0]);
   users.reverse();
-  console.log(users, "users");
+  // console.log(users, "users");
 
   //return res.json(data);
 
