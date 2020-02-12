@@ -9,7 +9,7 @@ app.use(express.json());
 const users = [];
 
 app.post("/geo", (req, res) => {
-  const user = req.body.user[0];
+  const { user } = req.body.user;
 
   console.log(user, "user");
 
