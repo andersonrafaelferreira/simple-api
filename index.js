@@ -11,7 +11,7 @@ const users = [];
 app.post("/geo", (req, res) => {
   const user = req.body;
 
-  console.log(user, "user");
+  console.log(user, "user", "or", req.body);
 
   users.push(user);
   users.reverse();
