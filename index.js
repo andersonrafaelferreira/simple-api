@@ -1,7 +1,11 @@
 var express = require("express");
 var nunjucks = require("nunjucks");
 
+var cors = require("cors");
+
 var app = express();
+
+app.use(cors());
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
