@@ -58,6 +58,12 @@ app.post("/create", function(req, res) {
   return res.redirect("/");
 });
 
+app.post("/app", function(req, res) {
+  const details = req.body;
+
+  return res.send({ details });
+});
+
 // production;
 app.listen(process.env.PORT);
 
