@@ -64,11 +64,10 @@ app.post("/create", function(req, res) {
 app.post("/app", function(req, res) {
   const details = req.body;
 
-  let user = details[0];
+  let user = details;
 
+  console.log(details, "details");
   console.log(user, "user");
-
-  user.createdAt = new Date().toLocaleTimeString();
 
   users.push(user);
   users.reverse();
