@@ -1,6 +1,9 @@
 var express = require("express");
 var nunjucks = require("nunjucks");
 
+require('dotenv').config()
+
+
 var cors = require("cors");
 
 var app = express();
@@ -60,6 +63,15 @@ app.post("/create", function(req, res) {
 
 app.post("/app", function(req, res) {
   const details = req.body;
+
+  let user = details[0];
+
+  console.log(user, "user");
+
+  user.createdAt = new Date().toLocaleTimeString();
+
+  users.push(user);
+  users.reverse();
 
   return res.send({ details });
 });
