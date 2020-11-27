@@ -77,10 +77,12 @@ app.post("/app", function(req, res) {
 
 app.post("/demora", async function(req, res) {
 
+  const details = req.body;
+
   const result = await new Promise((resolve) => setTimeout(resolve, 5000)); 
 
 
-  return res.send({ demora: "5 segundos", result });
+  return res.send({ demora: "5 segundos", result, details });
 });
 
 // production;
