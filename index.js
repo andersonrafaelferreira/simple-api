@@ -86,14 +86,16 @@ app.post("/demora", async function(req, res) {
   return res.send({ demora: "5 segundos", result, details });
 });
 
-let replaced = "Centro";
-let data = {};
+app.get("/maps/:from/:to", async(req, res) => {
+  let data = {};
 
-app.get("/maps", async(req, res) => {
+  const { from, to} = req.params;
 
-  let URL = `https://www.google.com/maps/dir/Jardim+America,+Rio+Claro+-+SP/${replaced},+Rio+Claro+-+SP/`;
+  console.log(from, to);
+
+  let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
     console.log(URL);
-    
+
     try{
       // const browser = await puppeteer.launch();
       const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
@@ -123,6 +125,58 @@ app.get("/maps", async(req, res) => {
     } 
 
   res.json({status: data});
+})
+app.post("/maps", async(req, res) => {
+  let data = {};
+
+  const { url } = req.body;
+
+  // let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
+    console.log(url);
+
+    try{
+      // const browser = await puppeteer.launch();
+      const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+
+      const page = await browser.newPage();
+      await page.goto(url);
+  
+      // console.log(await page.content());
+  
+      const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
+      const alternative = await page.evaluate(() => document.querySelector(".section-directions-trip-distance").innerText);
+  
+      if(alternative){
+        console.log("if alternative", alternative);
+      }
+      if(distance){
+        console.log("distance", distance);
+  
+        await browser.close();
+    
+        const [km] = distance.split(" "); 
+    
+        console.log("km", km)
+    
+        data.distance = km;
+      }else{
+        console.log("alternative else", alternative)
+        await browser.close();
+    
+        const [km] = alternative.split(" "); 
+    
+        console.log("km", km)
+    
+        data.distance = km;
+      }
+      res.json(data);
+    }
+
+    catch(err){
+      console.log("deu merda", err);
+      res.status(400).send({error: "Cannot read property 'innerText' of null"})
+    } 
+
 })
 
 // production;
