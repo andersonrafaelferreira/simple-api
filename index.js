@@ -1,4 +1,5 @@
 var express = require("express");
+var puppeteer = require("puppeteer");
 var nunjucks = require("nunjucks");
 
 require('dotenv').config()
@@ -84,6 +85,44 @@ app.post("/demora", async function(req, res) {
 
   return res.send({ demora: "5 segundos", result, details });
 });
+
+let replaced = "Centro";
+let data = {};
+
+app.get("/maps", async(req, res) => {
+
+  let URL = `https://www.google.com/maps/dir/Jardim+America,+Rio+Claro+-+SP/${replaced},+Rio+Claro+-+SP/`;
+    console.log(URL);
+    
+    try{
+      const browser = await puppeteer.launch();
+  
+      const page = await browser.newPage();
+      await page.goto(URL);
+  
+      // console.log(await page.content());
+  
+      const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
+  
+      if(distance){
+        console.log("distance", distance);
+  
+        await browser.close();
+    
+        const [km] = distance.split(" "); 
+    
+        console.log("km", km)
+    
+        data.distance = km;
+      }
+    }
+      
+    catch(err){
+      console.log(err);
+    } 
+
+  res.json({status: data});
+})
 
 // production;
 app.listen(process.env.PORT);
