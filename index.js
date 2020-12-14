@@ -101,21 +101,21 @@ app.get("/maps", async(req, res) => {
       const page = await browser.newPage();
       await page.goto(URL);
   
-      console.log(await page.content());
+      // console.log(await page.content());
   
-      // const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
+      const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
   
-      // if(distance){
-      //   console.log("distance", distance);
+      if(distance){
+        console.log("distance", distance);
   
-      //   await browser.close();
+        await browser.close();
     
-      //   const [km] = distance.split(" "); 
+        const [km] = distance.split(" "); 
     
-      //   console.log("km", km)
+        console.log("km", km)
     
-      //   data.distance = km;
-      // }
+        data.distance = km;
+      }
     }
       
     catch(err){
