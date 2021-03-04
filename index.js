@@ -1,6 +1,8 @@
 var express = require("express");
-var puppeteer = require("puppeteer");
+// var puppeteer = require("puppeteer");
 var nunjucks = require("nunjucks");
+
+const nodemailer = require('nodemailer');
 
 require('dotenv').config()
 
@@ -86,98 +88,131 @@ app.post("/demora", async function(req, res) {
   return res.send({ demora: "5 segundos", result, details });
 });
 
-app.get("/maps/:from/:to", async(req, res) => {
-  let data = {};
+// app.get("/maps/:from/:to", async(req, res) => {
+//   let data = {};
 
-  const { from, to} = req.params;
+//   const { from, to} = req.params;
 
-  console.log(from, to);
+//   console.log(from, to);
 
-  let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
-    console.log(URL);
+//   let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
+//     console.log(URL);
 
-    try{
-      // const browser = await puppeteer.launch();
-      const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+//     try{
+//       // const browser = await puppeteer.launch();
+//       const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
 
-      const page = await browser.newPage();
-      await page.goto(URL);
+//       const page = await browser.newPage();
+//       await page.goto(URL);
   
-      // console.log(await page.content());
+//       // console.log(await page.content());
   
-      const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
+//       const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
   
-      if(distance){
-        console.log("distance", distance);
+//       if(distance){
+//         console.log("distance", distance);
   
-        await browser.close();
+//         await browser.close();
     
-        const [km] = distance.split(" "); 
+//         const [km] = distance.split(" "); 
     
-        console.log("km", km)
+//         console.log("km", km)
     
-        data.distance = km;
-      }
-    }
+//         data.distance = km;
+//       }
+//     }
       
-    catch(err){
-      console.log(err);
-    } 
+//     catch(err){
+//       console.log(err);
+//     } 
 
-  res.json({status: data});
-})
-app.post("/maps", async(req, res) => {
-  let data = {};
+//   res.json({status: data});
+// })
 
-  const { url } = req.body;
+// app.post("/maps", async(req, res) => {
+//   let data = {};
 
-  // let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
-    console.log(url);
+//   const { url } = req.body;
 
-    try{
-      // const browser = await puppeteer.launch();
-      const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+//   // let URL = `https://www.google.com/maps/dir/${from},+Rio+Claro+-+SP/${to},+Rio+Claro+-+SP/`;
+//     console.log(url);
 
-      const page = await browser.newPage();
-      await page.goto(url);
+//     try{
+//       // const browser = await puppeteer.launch();
+//       const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+
+//       const page = await browser.newPage();
+//       await page.goto(url);
   
-      // console.log(await page.content());
+//       // console.log(await page.content());
   
-      const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
-      const alternative = await page.evaluate(() => document.querySelector(".section-directions-trip-distance").innerText);
+//       const distance = await page.evaluate(() => document.querySelector(".section-directions-trip-secondary-text").innerText);
+//       const alternative = await page.evaluate(() => document.querySelector(".section-directions-trip-distance").innerText);
   
-      if(alternative){
-        console.log("if alternative", alternative);
-      }
-      if(distance){
-        console.log("distance", distance);
+//       if(alternative){
+//         console.log("if alternative", alternative);
+//       }
+//       if(distance){
+//         console.log("distance", distance);
   
-        await browser.close();
+//         await browser.close();
     
-        const [km] = distance.split(" "); 
+//         const [km] = distance.split(" "); 
     
-        console.log("km", km)
+//         console.log("km", km)
     
-        data.distance = km;
-      }else{
-        console.log("alternative else", alternative)
-        await browser.close();
+//         data.distance = km;
+//       }else{
+//         console.log("alternative else", alternative)
+//         await browser.close();
     
-        const [km] = alternative.split(" "); 
+//         const [km] = alternative.split(" "); 
     
-        console.log("km", km)
+//         console.log("km", km)
     
-        data.distance = km;
-      }
-      res.json(data);
+//         data.distance = km;
+//       }
+//       res.json(data);
+//     }
+
+//     catch(err){
+//       console.log("deu merda", err);
+//       res.status(400).send({error: "Cannot read property 'innerText' of null"})
+//     } 
+
+// })
+
+app.get("/mail", function(req, res) {
+  const data = req.body;
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'freela.tech@gmail.com',
+      pass: 'tech4455@@'
     }
+  });
+  let ran = Math.random().toString(36).substr(2, 10);
+  
+  const mailOptions = {
+    from: 'oi@rafa.delivery',
+    to: 'andersonrafaelferreira@gmail.com, rafaeldns@gmail.com',
+    subject: `Sending Email using Node.js ${ran}`,
+    text: `That was easy! ${ran}`
+  };
 
-    catch(err){
-      console.log("deu merda", err);
-      res.status(400).send({error: "Cannot read property 'innerText' of null"})
-    } 
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+      res.json({status: 'Email not sent', error });
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.json({status: 'Email sent', mailer: info.response, timestamp: new Date().getTime() });
 
-})
+    }
+  });
+});
+
 
 // production;
 app.listen(process.env.PORT);
