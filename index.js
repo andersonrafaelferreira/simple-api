@@ -190,6 +190,11 @@ app.get("/mail", function(req, res) {
     auth: {
       user: 'freela.tech@gmail.com',
       pass: 'tech4455@@'
+    },
+    secure: false,
+    port: 25,
+    tls: {	
+      rejectUnauthorized: false
     }
   });
   let ran = Math.random().toString(36).substr(2, 10);
