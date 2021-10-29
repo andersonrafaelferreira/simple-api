@@ -18,6 +18,19 @@ app.use(express.json());
 
 const users = [];
 
+app.post("/user", (req, res) => {
+  const {email, pass} = req.body;
+
+  if(!email || !pass){
+    return res.status(400).send({ error: 'invalid options' });
+  }
+
+  return res.status(200).send({ data:{email, pass}, success: 'options accepted' });
+
+  // local view
+  // return res.redirect("/");
+});
+
 app.post("/geo", (req, res) => {
   const item = req.body;
 
