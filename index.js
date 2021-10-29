@@ -31,6 +31,19 @@ app.post("/user", (req, res) => {
   // return res.redirect("/");
 });
 
+app.put("/user", (req, res) => {
+  const {email, pass} = req.body;
+
+  if(!email || !pass){
+    return res.status(401).json({ message: 'invalid options' });
+  }
+
+  return res.status(200).send({ data:{email, pass}, success: 'options accepted / put' });
+
+  // local view
+  // return res.redirect("/");
+});
+
 app.post("/geo", (req, res) => {
   const item = req.body;
 
